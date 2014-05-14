@@ -1,0 +1,862 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:protege="http://protege.stanford.edu/plugins/owl/protege#"
+    xmlns:xsp="http://www.owl-ontologies.com/2005/08/07/xsp.owl#"
+    xmlns="http://www.owl-ontologies.com/OntologyTwitter.owl#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+    xmlns:swrl="http://www.w3.org/2003/11/swrl#"
+    xmlns:swrlb="http://www.w3.org/2003/11/swrlb#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+  xml:base="http://www.owl-ontologies.com/OntologyTwitter.owl">
+  <owl:Ontology rdf:about=""/>
+  <owl:Class rdf:ID="Media">
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="Entity"/>
+    </rdfs:subClassOf>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="Hashtag"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="Url"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="UserMention"/>
+    </owl:disjointWith>
+  </owl:Class>
+  <owl:Class rdf:ID="Place">
+    <owl:disjointWith>
+      <owl:Class rdf:ID="Tweet"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="User"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#Entity"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="Coordinates"/>
+    </owl:disjointWith>
+  </owl:Class>
+  <owl:Class rdf:about="#Entity">
+    <owl:disjointWith>
+      <owl:Class rdf:about="#Tweet"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#User"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#Place"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#Coordinates"/>
+    </owl:disjointWith>
+  </owl:Class>
+  <owl:Class rdf:about="#Url">
+    <owl:disjointWith>
+      <owl:Class rdf:about="#Hashtag"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#Media"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#UserMention"/>
+    </owl:disjointWith>
+    <rdfs:subClassOf rdf:resource="#Entity"/>
+  </owl:Class>
+  <owl:Class rdf:about="#Coordinates">
+    <owl:disjointWith>
+      <owl:Class rdf:about="#Tweet"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#User"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#Entity"/>
+    <owl:disjointWith rdf:resource="#Place"/>
+  </owl:Class>
+  <owl:Class rdf:about="#UserMention">
+    <rdfs:subClassOf rdf:resource="#Entity"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#Hashtag"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#Media"/>
+    <owl:disjointWith rdf:resource="#Url"/>
+  </owl:Class>
+  <owl:Class rdf:about="#Hashtag">
+    <rdfs:subClassOf rdf:resource="#Entity"/>
+    <owl:disjointWith rdf:resource="#Media"/>
+    <owl:disjointWith rdf:resource="#Url"/>
+    <owl:disjointWith rdf:resource="#UserMention"/>
+  </owl:Class>
+  <owl:Class rdf:about="#Tweet">
+    <owl:disjointWith>
+      <owl:Class rdf:about="#User"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#Entity"/>
+    <owl:disjointWith rdf:resource="#Place"/>
+    <owl:disjointWith rdf:resource="#Coordinates"/>
+  </owl:Class>
+  <owl:Class rdf:about="#User">
+    <owl:disjointWith rdf:resource="#Coordinates"/>
+    <owl:disjointWith rdf:resource="#Tweet"/>
+    <owl:disjointWith rdf:resource="#Entity"/>
+    <owl:disjointWith rdf:resource="#Place"/>
+  </owl:Class>
+  <owl:ObjectProperty rdf:ID="inPlace">
+    <rdfs:range rdf:resource="#Place"/>
+    <rdfs:domain rdf:resource="#Coordinates"/>
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:ID="boundingBox"/>
+    </owl:inverseOf>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="isFollowedBy">
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:ID="follows"/>
+    </owl:inverseOf>
+    <rdfs:range rdf:resource="#User"/>
+    <rdfs:domain rdf:resource="#User"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="mentionsUser">
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:ID="mentionedIn"/>
+    </owl:inverseOf>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:domain rdf:resource="#UserMention"/>
+    <rdfs:comment xml:lang="en">&lt;p style="margin-top: 0"&gt;&#xD;
+      The User mentioned&#xD;
+    &lt;/p&gt;</rdfs:comment>
+    <rdfs:range rdf:resource="#User"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="inTweet">
+    <rdfs:domain rdf:resource="#Coordinates"/>
+    <rdfs:range rdf:resource="#Tweet"/>
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:ID="hasCoordinates"/>
+    </owl:inverseOf>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="tweetRelated">
+    <rdfs:domain rdf:resource="#Place"/>
+    <rdfs:range rdf:resource="#Tweet"/>
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:ID="relatedToPlace"/>
+    </owl:inverseOf>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#hasCoordinates">
+    <owl:inverseOf rdf:resource="#inTweet"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:domain rdf:resource="#Tweet"/>
+    <rdfs:comment xml:lang="en">&lt;p style="margin-top: 0"&gt;&#xD;
+      Geographic location of this Tweet as reported by the User&#xD;
+    &lt;/p&gt;</rdfs:comment>
+    <rdfs:range rdf:resource="#Coordinates"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#follows">
+    <rdfs:range rdf:resource="#User"/>
+    <rdfs:domain rdf:resource="#User"/>
+    <owl:inverseOf rdf:resource="#isFollowedBy"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="isAuthor">
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:ID="authoredBy"/>
+    </owl:inverseOf>
+    <rdfs:domain rdf:resource="#User"/>
+    <rdfs:range rdf:resource="#Tweet"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="inReplyOfUser">
+    <rdfs:comment xml:lang="en">&lt;p style="margin-top: 0"&gt;&#xD;
+      If Tweet is a reply, contains the Tweet replied&#xD;
+    &lt;/p&gt;</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:range rdf:resource="#User"/>
+    <rdfs:domain rdf:resource="#Tweet"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="comesFrom">
+    <rdfs:range rdf:resource="#Tweet"/>
+    <rdfs:domain rdf:resource="#Entity"/>
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:ID="hasEntities"/>
+    </owl:inverseOf>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="hasUrl">
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:ID="comesFromUser"/>
+    </owl:inverseOf>
+    <rdfs:range rdf:resource="#Url"/>
+    <rdfs:domain rdf:resource="#User"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#authoredBy">
+    <owl:inverseOf rdf:resource="#isAuthor"/>
+    <rdfs:comment xml:lang="en">&lt;p style="margin-top: 0"&gt;&#xD;
+      User who authored this Tweet&#xD;
+    &lt;/p&gt;</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:range rdf:resource="#User"/>
+    <rdfs:domain rdf:resource="#Tweet"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#mentionedIn">
+    <rdfs:domain rdf:resource="#User"/>
+    <rdfs:range rdf:resource="#UserMention"/>
+    <owl:inverseOf rdf:resource="#mentionsUser"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#comesFromUser">
+    <owl:inverseOf rdf:resource="#hasUrl"/>
+    <rdfs:range rdf:resource="#User"/>
+    <rdfs:domain rdf:resource="#Url"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="inReplyOfTweet">
+    <rdfs:comment xml:lang="en">&lt;p style="margin-top: 0"&gt;&#xD;
+      If Tweet is a reply, contains the Tweet replied&#xD;
+    &lt;/p&gt;</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:domain rdf:resource="#Tweet"/>
+    <rdfs:range rdf:resource="#Tweet"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#relatedToPlace">
+    <rdfs:range rdf:resource="#Place"/>
+    <rdfs:comment xml:lang="en">&lt;p style="margin-top: 0"&gt;&#xD;
+      The Tweet is related to this Place&#xD;
+    &lt;/p&gt;</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <owl:inverseOf rdf:resource="#tweetRelated"/>
+    <rdfs:domain rdf:resource="#Tweet"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#boundingBox">
+    <owl:inverseOf rdf:resource="#inPlace"/>
+    <rdfs:range rdf:resource="#Coordinates"/>
+    <rdfs:comment xml:lang="en">&lt;p style="margin-top: 0"&gt;&#xD;
+      Coordinates making the bounding box that encloses the Place&#xD;
+    &lt;/p&gt;</rdfs:comment>
+    <rdfs:domain rdf:resource="#Place"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#hasEntities">
+    <rdfs:comment xml:lang="en">&lt;p style="margin-top: 0"&gt;&#xD;
+      Entities parsed out from the text of the Tweet&#xD;
+    &lt;/p&gt;</rdfs:comment>
+    <rdfs:domain rdf:resource="#Tweet"/>
+    <rdfs:range rdf:resource="#Entity"/>
+    <owl:inverseOf rdf:resource="#comesFrom"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="isRetweet">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:comment xml:lang="en">&lt;p style="margin-top: 0"&gt;&#xD;
+      If this Tweet is a retweet, contains the original Tweet&#xD;
+    &lt;/p&gt;</rdfs:comment>
+    <rdfs:range rdf:resource="#Tweet"/>
+    <rdfs:domain rdf:resource="#Tweet"/>
+  </owl:ObjectProperty>
+  <owl:DatatypeProperty rdf:ID="tweetCount">
+    <rdfs:domain rdf:resource="#User"/>
+    <rdfs:comment xml:lang="en">&lt;p style="margin-top: 0"&gt;&#xD;
+      Number of Tweet published by User&#xD;
+    &lt;/p&gt;</rdfs:comment>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="attributes">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="#Place"/>
+    <rdfs:comment xml:lang="en">&lt;p style="margin-top: 0"&gt;&#xD;
+      Additional information about the Place, like address etc.&#xD;
+    &lt;/p&gt;</rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="listedCount">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+    <rdfs:comment xml:lang="en">&lt;p style="margin-top: 0"&gt;&#xD;
+      Number of public lists where this User is member&#xD;
+    &lt;/p&gt;</rdfs:comment>
+    <rdfs:domain rdf:resource="#User"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="type">
+    <rdfs:comment xml:lang="en">&lt;p style="margin-top: 0"&gt;&#xD;
+    &lt;/p&gt;</rdfs:comment>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#Media"/>
+          <owl:Class rdf:about="#Place"/>
+          <owl:Class rdf:about="#Coordinates"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="friendsCount">
+    <rdfs:comment xml:lang="en">&lt;p style="margin-top: 0"&gt;&#xD;
+      Number of User this User is following&#xD;
+    &lt;/p&gt;</rdfs:comment>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+    <rdfs:domain rdf:resource="#User"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="timeZone">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="#User"/>
+    <rdfs:comment xml:lang="en">&lt;p style="margin-top: 0"&gt;&#xD;
+      User defined time zone&#xD;
+    &lt;/p&gt;</rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="id">
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#Tweet"/>
+          <owl:Class rdf:about="#User"/>
+          <owl:Class rdf:about="#Media"/>
+          <owl:Class rdf:about="#Place"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:comment xml:lang="en">&lt;p style="margin-top: 0"&gt;&#xD;
+      Unique id of this Individual
+    &lt;/p&gt;</rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="countryName">
+    <rdfs:comment xml:lang="en">&lt;p style="margin-top: 0"&gt;&#xD;
+      Place's country name&#xD;
+    &lt;/p&gt;</rdfs:comment>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="#Place"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="indexA">
+    <rdfs:domain rdf:resource="#Entity"/>
+    <rdfs:comment xml:lang="en">&lt;p style="margin-top: 0"&gt;&#xD;
+      Initial position of the entity in the text field&#xD;
+    &lt;/p&gt;</rdfs:comment>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="screenName">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:comment xml:lang="en">&lt;p style="margin-top: 0"&gt;&#xD;
+      User pseudonym&#xD;
+    &lt;/p&gt;</rdfs:comment>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#User"/>
+          <owl:Class rdf:about="#UserMention"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="description">
+    <rdfs:comment xml:lang="en">&lt;p style="margin-top: 0"&gt;&#xD;
+      User defined description&#xD;
+    &lt;/p&gt;</rdfs:comment>
+    <rdfs:domain rdf:resource="#User"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="protected">
+    <rdfs:comment xml:lang="en">&lt;p style="margin-top: 0"&gt;&#xD;
+      has the User protected his tweets?&#xD;
+    &lt;/p&gt;</rdfs:comment>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    <rdfs:domain rdf:resource="#User"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="location">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="#User"/>
+    <rdfs:comment xml:lang="en">&lt;p style="margin-top: 0"&gt;&#xD;
+      User location, defined by himself&#xD;
+    &lt;/p&gt;</rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="createdAt">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#Tweet"/>
+          <owl:Class rdf:about="#User"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+    <rdfs:comment xml:lang="en">&lt;p style="margin-top: 0"&gt;&#xD;
+      UTC time of the creation of the Individual
+    &lt;/p&gt;</rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="longitude">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:comment xml:lang="en">&lt;p style="margin-top: 0"&gt;&#xD;
+      longitude value for Coordinates&#xD;
+    &lt;/p&gt;</rdfs:comment>
+    <rdfs:domain rdf:resource="#Coordinates"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="countryCode">
+    <rdfs:comment xml:lang="en">&lt;p style="margin-top: 0"&gt;&#xD;
+      Place's country code&#xD;
+    &lt;/p&gt;</rdfs:comment>
+    <rdfs:domain rdf:resource="#Place"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="mediaUrl">
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#Media"/>
+          <owl:Class rdf:about="#Url"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+    <rdfs:comment xml:lang="en">&lt;p style="margin-top: 0"&gt;&#xD;
+      URL unique for this resourse.&#xD;
+    &lt;/p&gt;</rdfs:comment>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="fullName">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="#Place"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="favouritesCount">
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#Tweet"/>
+          <owl:Class rdf:about="#User"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+    <rdfs:comment xml:lang="en">&lt;p style="margin-top: 0"&gt;&#xD;
+      Times this Tweet is favourited&#xD; or this User has favorited
+    &lt;/p&gt;</rdfs:comment>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="displayUrl">
+    <rdfs:comment xml:lang="en">&lt;p style="margin-top: 0"&gt;&#xD;
+      Url as it appears in the text field&#xD;
+    &lt;/p&gt;</rdfs:comment>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#Media"/>
+          <owl:Class rdf:about="#Url"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="lang">
+    <rdfs:domain rdf:resource="#Tweet"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:comment xml:lang="en">machine detected language of the text</rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="url">
+    <rdfs:domain rdf:resource="#Place"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="indexB">
+    <rdfs:comment xml:lang="en">&lt;p style="margin-top: 0"&gt;&#xD;
+      Final position of the entity text in the text field.&#xD;
+    &lt;/p&gt;</rdfs:comment>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+    <rdfs:domain rdf:resource="#Entity"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="isVerified">
+    <rdfs:comment xml:lang="en">&lt;p style="margin-top: 0"&gt;&#xD;
+      Is User a verified individual?&#xD;
+    &lt;/p&gt;</rdfs:comment>
+    <rdfs:domain rdf:resource="#User"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="name">
+    <rdfs:domain rdf:resource="#User"/>
+    <rdfs:comment xml:lang="en">&lt;p style="margin-top: 0"&gt;&#xD;
+      User's name&#xD;
+    &lt;/p&gt;</rdfs:comment>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="followersCount">
+    <rdfs:domain rdf:resource="#User"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+    <rdfs:comment xml:lang="en">&lt;p style="margin-top: 0"&gt;&#xD;
+      Number of Users following this User&#xD;
+    &lt;/p&gt;</rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="source">
+    <rdfs:domain rdf:resource="#Tweet"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:comment xml:lang="en">Utility used to post the Tweet, HTML-formatted string.</rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="latitude">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+    <rdfs:domain rdf:resource="#Coordinates"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:comment xml:lang="en">&lt;p style="margin-top: 0"&gt;&#xD;
+      latitude vale of the Coordinates&#xD;
+    &lt;/p&gt;</rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="retweetsCount">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+    <rdfs:comment xml:lang="en">&lt;p style="margin-top: 0"&gt;&#xD;
+      number of times this Tweet has been retweetted&#xD;
+    &lt;/p&gt;</rdfs:comment>
+    <rdfs:domain rdf:resource="#Tweet"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="text">
+    <rdfs:comment xml:lang="en">&lt;p style="margin-top: 0"&gt;&#xD;
+      text of the individual
+    &lt;/p&gt;</rdfs:comment>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#Tweet"/>
+          <owl:Class rdf:about="#Hashtag"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <UserMention rdf:ID="UserMentionAtoB">
+    <indexB rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+    >44</indexB>
+    <indexA rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+    >39</indexA>
+    <mentionsUser>
+      <User rdf:ID="UserB">
+        <screenName rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+        >ImUserB</screenName>
+        <name rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+        >Amic B</name>
+        <isAuthor>
+          <Tweet rdf:ID="TweetB2">
+            <authoredBy rdf:resource="#UserB"/>
+            <createdAt rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+            >2014-04-12T22:11:34</createdAt>
+            <isRetweet>
+              <Tweet rdf:ID="TweetA4">
+                <retweetsCount rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+                >1</retweetsCount>
+                <authoredBy>
+                  <User rdf:ID="UserA">
+                    <screenName rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                    >UserARules</screenName>
+                    <createdAt rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+                    >2014-04-01T20:53:29</createdAt>
+                    <friendsCount rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+                    >2</friendsCount>
+                    <id rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                    >123456789</id>
+                    <protected rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+                    >false</protected>
+                    <isVerified rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+                    >false</isVerified>
+                    <name rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                    >Primer user</name>
+                    <listedCount rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+                    >0</listedCount>
+                    <favouritesCount rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+                    >3</favouritesCount>
+                    <description rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                    >UserA is the main sample user</description>
+                    <isAuthor rdf:resource="#TweetA4"/>
+                    <location rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                    >Barcelona</location>
+                    <isAuthor>
+                      <Tweet rdf:ID="TweetA3">
+                        <source rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                        >web</source>
+                        <hasEntities>
+                          <Url rdf:ID="UrlA1">
+                            <comesFrom rdf:resource="#TweetA3"/>
+                            <displayUrl rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                            >http://www.ontologytwitter.org</displayUrl>
+                            <mediaUrl rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                            >http://www.ontologytwitter.org</mediaUrl>
+                            <indexA rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+                            >29</indexA>
+                            <indexB rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+                            >59</indexB>
+                          </Url>
+                        </hasEntities>
+                        <createdAt rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+                        >2014-04-12T22:10:58</createdAt>
+                        <hasEntities>
+                          <Url rdf:ID="UrlA2">
+                            <comesFrom rdf:resource="#TweetA3"/>
+                            <displayUrl rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                            >http://www.owl-ontologies.com/OntologyTwitter.owl</displayUrl>
+                            <indexA rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+                            >64</indexA>
+                            <indexB rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+                            >113</indexB>
+                            <mediaUrl rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                            >http://www.owl-ontologies.com/OntologyTwitter.owl</mediaUrl>
+                          </Url>
+                        </hasEntities>
+                        <inReplyOfTweet>
+                          <Tweet rdf:ID="TweetB1">
+                            <authoredBy rdf:resource="#UserB"/>
+                            <text rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                            >Thank you very much! Can you tell me how to use the ontology?</text>
+                            <createdAt rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+                            >2014-04-11T21:12:21</createdAt>
+                            <lang rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                            >en</lang>
+                            <source rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                            >Twitter for android</source>
+                            <id rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                            >23434341</id>
+                            <inReplyOfUser rdf:resource="#UserA"/>
+                            <inReplyOfTweet>
+                              <Tweet rdf:ID="TweetA2">
+                                <retweetsCount rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+                                >1</retweetsCount>
+                                <createdAt rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+                                >2014-04-11T21:10:03</createdAt>
+                                <text rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                                >Welcome to the #TwitterOntology !! http://www.image.jpg No doubt to ask questions...</text>
+                                <id rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                                >343452345</id>
+                                <source rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                                >web</source>
+                                <lang rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                                >en</lang>
+                                <hasEntities>
+                                  <Media rdf:ID="MediaA2">
+                                    <comesFrom rdf:resource="#TweetA2"/>
+                                    <mediaUrl rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                                    >http://www.image.jpg</mediaUrl>
+                                    <id rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                                    >6641354543</id>
+                                    <displayUrl rdf:datatype=
+                                    "http://www.w3.org/2001/XMLSchema#string"
+                                    >http://www.image.jpg</displayUrl>
+                                    <indexA rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+                                    >35</indexA>
+                                    <indexB rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+                                    >55</indexB>
+                                    <type rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                                    >photo</type>
+                                  </Media>
+                                </hasEntities>
+                                <favouritesCount rdf:datatype=
+                                "http://www.w3.org/2001/XMLSchema#int"
+                                >1</favouritesCount>
+                                <hasEntities>
+                                  <Hashtag rdf:ID="HashtagA2">
+                                    <text rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                                    >TwitterOntology</text>
+                                    <comesFrom rdf:resource="#TweetA2"/>
+                                    <indexB rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+                                    >30</indexB>
+                                    <indexA rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+                                    >0</indexA>
+                                  </Hashtag>
+                                </hasEntities>
+                                <authoredBy rdf:resource="#UserA"/>
+                              </Tweet>
+                            </inReplyOfTweet>
+                          </Tweet>
+                        </inReplyOfTweet>
+                        <authoredBy rdf:resource="#UserA"/>
+                        <inReplyOfUser rdf:resource="#UserB"/>
+                        <id rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                        >456373</id>
+                        <text rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                        >Sure, you just need to visit http://www.ontologytwitter.org and http://www.owl-ontologies.com/OntologyTwitter.owl. Thanks for coming! </text>
+                      </Tweet>
+                    </isAuthor>
+                    <tweetCount rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+                    >6</tweetCount>
+                    <follows rdf:resource="#UserB"/>
+                    <timeZone rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                    >GMT+1 Madrid</timeZone>
+                    <follows>
+                      <User rdf:ID="UserC">
+                        <createdAt rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+                        >2014-04-10T21:01:17</createdAt>
+                        <favouritesCount rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+                        >0</favouritesCount>
+                        <friendsCount rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+                        >0</friendsCount>
+                        <listedCount rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+                        >0</listedCount>
+                        <name rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                        >Die C user</name>
+                        <isVerified rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+                        >false</isVerified>
+                        <location rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                        >Berlin</location>
+                        <isFollowedBy rdf:resource="#UserA"/>
+                        <id rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                        >123456789</id>
+                        <protected rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+                        >false</protected>
+                        <screenName rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                        >UserC</screenName>
+                        <timeZone rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                        >GMT+1 Madrid</timeZone>
+                        <isAuthor>
+                          <Tweet rdf:ID="TweetC1">
+                            <relatedToPlace>
+                              <Place rdf:ID="Place1">
+                                <boundingBox>
+                                  <Coordinates rdf:ID="Coordinates3">
+                                    <type rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                                    >point</type>
+                                    <latitude rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
+                                    >12.584111</latitude>
+                                    <inPlace rdf:resource="#Place1"/>
+                                    <longitude rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
+                                    >-69.12512</longitude>
+                                  </Coordinates>
+                                </boundingBox>
+                                <countryName rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                                >Spain</countryName>
+                                <id rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                                >41354351435</id>
+                                <tweetRelated rdf:resource="#TweetC1"/>
+                                <boundingBox>
+                                  <Coordinates rdf:ID="Coordinates4">
+                                    <latitude rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
+                                    >12.584113</latitude>
+                                    <longitude rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
+                                    >-69.125</longitude>
+                                    <inPlace rdf:resource="#Place1"/>
+                                    <type rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                                    >point</type>
+                                  </Coordinates>
+                                </boundingBox>
+                                <fullName rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                                >Madrid, ES</fullName>
+                                <attributes rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                                >Gran via, 23</attributes>
+                                <boundingBox>
+                                  <Coordinates rdf:ID="Coordinates2">
+                                    <type rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                                    >point</type>
+                                    <latitude rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
+                                    >12.584111</latitude>
+                                    <longitude rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
+                                    >-69.125</longitude>
+                                    <inPlace rdf:resource="#Place1"/>
+                                  </Coordinates>
+                                </boundingBox>
+                                <countryCode rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                                >ES</countryCode>
+                                <boundingBox>
+                                  <Coordinates rdf:ID="Coordinates5">
+                                    <longitude rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
+                                    >-69.12345</longitude>
+                                    <inPlace rdf:resource="#Place1"/>
+                                    <type rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                                    >point</type>
+                                    <latitude rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
+                                    >12.584111</latitude>
+                                  </Coordinates>
+                                </boundingBox>
+                                <type rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                                >city</type>
+                              </Place>
+                            </relatedToPlace>
+                            <authoredBy rdf:resource="#UserC"/>
+                            <source rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                            >Twitter for iosx</source>
+                            <text rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                            >Hi all! I'm new in Twitter, My name is UserC and I'm in holidays in Madrid</text>
+                            <createdAt rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+                            >2014-04-01T22:12:41</createdAt>
+                          </Tweet>
+                        </isAuthor>
+                        <followersCount rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+                        >0</followersCount>
+                        <description rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                        >third user</description>
+                        <tweetCount rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+                        >2</tweetCount>
+                      </User>
+                    </follows>
+                    <followersCount rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+                    >1</followersCount>
+                    <isAuthor rdf:resource="#TweetA2"/>
+                    <isFollowedBy rdf:resource="#UserB"/>
+                    <isAuthor>
+                      <Tweet rdf:ID="TweetA1">
+                        <favouritesCount rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+                        >1</favouritesCount>
+                        <createdAt rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+                        >2014-04-10T21:05:53</createdAt>
+                        <hasCoordinates>
+                          <Coordinates rdf:ID="Coordinates1">
+                            <latitude rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
+                            >12.584688</latitude>
+                            <longitude rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
+                            >-69.12549</longitude>
+                            <type rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                            >point</type>
+                            <inTweet rdf:resource="#TweetA1"/>
+                          </Coordinates>
+                        </hasCoordinates>
+                        <id rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                        >1234342454</id>
+                        <lang rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                        >en</lang>
+                        <source rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                        >web</source>
+                        <authoredBy rdf:resource="#UserA"/>
+                        <text rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                        >Hello there! I'm using Twitter!!!</text>
+                      </Tweet>
+                    </isAuthor>
+                  </User>
+                </authoredBy>
+                <createdAt rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+                >2014-04-12T22:11:24</createdAt>
+                <favouritesCount rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+                >1</favouritesCount>
+                <id rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                >5432524356</id>
+                <source rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                >web</source>
+                <hasEntities rdf:resource="#UserMentionAtoB"/>
+                <text rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                >Welcome to the Twitter Ontology group @UserB</text>
+              </Tweet>
+            </isRetweet>
+          </Tweet>
+        </isAuthor>
+        <favouritesCount rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >4</favouritesCount>
+        <isVerified rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+        >false</isVerified>
+        <friendsCount rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</friendsCount>
+        <listedCount rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</listedCount>
+        <isFollowedBy rdf:resource="#UserA"/>
+        <description rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+        >UserB friend of UserA</description>
+        <protected rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+        >false</protected>
+        <isAuthor rdf:resource="#TweetB1"/>
+        <tweetCount rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >3</tweetCount>
+        <location rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+        >Mataró</location>
+        <follows rdf:resource="#UserA"/>
+        <createdAt rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime"
+        >2014-04-01T20:53:29</createdAt>
+        <mentionedIn rdf:resource="#UserMentionAtoB"/>
+        <id rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+        >123456777</id>
+        <followersCount rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</followersCount>
+        <hasUrl>
+          <Url rdf:ID="UrlB1">
+            <displayUrl rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            >http://www.iamuserb.org</displayUrl>
+            <comesFromUser rdf:resource="#UserB"/>
+            <mediaUrl rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            >http://www.iamuserb.org</mediaUrl>
+            <indexB rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+            >0</indexB>
+            <indexA rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+            >23</indexA>
+          </Url>
+        </hasUrl>
+        <timeZone rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+        >GMT+1 Madrid</timeZone>
+      </User>
+    </mentionsUser>
+    <comesFrom rdf:resource="#TweetA4"/>
+    <screenName rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >UserB</screenName>
+  </UserMention>
+</rdf:RDF>
+
+<!-- Created with Protege (with OWL Plugin 3.5, Build 663)  http://protege.stanford.edu -->

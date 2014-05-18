@@ -1,6 +1,7 @@
 package tfc.consumer.handler;
 
 import org.apache.log4j.Logger;
+import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import tfc.dto.TweetDTO;
@@ -43,11 +44,13 @@ public class MessageHandler implements Runnable{
             } catch (InterruptedException e) {
                 log.error("Interrupted!", e);
                 Thread.interrupted();
+            } catch (OWLOntologyStorageException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
         }
     }
 
-    private void processMessage(Status message) throws InterruptedException {
+    private void processMessage(Status message) throws InterruptedException, OWLOntologyStorageException {
         try {
             TweetDTO tweet = twitterManager.process(message);
             //todo: if replied ask twitterManager for the Tweet

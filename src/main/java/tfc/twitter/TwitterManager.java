@@ -179,7 +179,7 @@ public class TwitterManager {
             for (UserMentionEntity o :userMentionEntities) {
                 UserMentionDTO userMentionDTO = new UserMentionDTO();
                 userMentionDTO.setComesFromTweetId(tweetId);
-                userMentionDTO.setMentionsUserId("" + o.getId());
+                userMentionDTO.setMentionsUserId("" + o.getId()); //todo go find User in Twitter
                 userMentionDTO.setMentionsScreenName(o.getScreenName());
                 userMentionDTO.setIndexA(o.getStart());
                 userMentionDTO.setIndexB(o.getEnd());
@@ -226,7 +226,7 @@ public class TwitterManager {
                 log.debug("Hashtag: " + o);
             }
         }
-       
+
         return hashtagDTOs;
     }
 
@@ -278,7 +278,7 @@ public class TwitterManager {
         toReturn.setScreenName(user.getScreenName());
         toReturn.setLocation(user.getLocation());
         toReturn.setDescription(user.getDescription());
-        toReturn.setUrl(user.getURL());
+        setUrlEntities(user, toReturn);
         toReturn.setProtectedUser(user.isProtected());
         toReturn.setFollowersCount(user.getFollowersCount());
         toReturn.setFriendsCount(user.getFriendsCount());
@@ -291,5 +291,26 @@ public class TwitterManager {
         toReturn.setUserFollowed(userDAO.findUserFriends(""+user.getId()));
         toReturn.setFollowers(userDAO.findUserFollowers(""+ user.getId()));
         return null;
+    }
+
+    private void setUrlEntities(User user, UserDTO toReturn) throws TwitterException {
+        User fetchedUser = userDAO.findUserById(""+user.getId());
+        URLEntity[] urlEntities = fetchedUser.getDescriptionURLEntities();
+        for (URLEntity urlEntity : urlEntities) {
+            if(urlEntity.getURL().equals(user.getURL())) {
+                toReturn.setUrl(buildUrlDTO(urlEntity, toReturn));
+                break;
+            }
+        }
+    }
+
+    private UrlDTO buildUrlDTO(URLEntity url, UserDTO userDTO) {
+        UrlDTO toReturn = new UrlDTO();
+        toReturn.setComesFromUserId(userDTO.getId());
+        toReturn.setDisplayUrl(url.getDisplayURL());
+        toReturn.setMediaUrl(url.getURL());
+        toReturn.setIndexA(url.getStart());
+        toReturn.setIndexB(url.getEnd());
+        return toReturn;
     }
 }

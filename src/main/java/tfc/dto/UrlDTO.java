@@ -1,7 +1,5 @@
 package tfc.dto;
 
-import tfc.entities.EntityType;
-
 /**
  * TDF
  * User: Esaú González
@@ -40,5 +38,10 @@ public class UrlDTO extends EntityDTO{
 
     public void setMediaUrl(String mediaUrl) {
         this.mediaUrl = mediaUrl;
+    }
+
+    @Override
+    public String toString() {
+        return getDisplayUrl().substring(11, 21);
     }
 }

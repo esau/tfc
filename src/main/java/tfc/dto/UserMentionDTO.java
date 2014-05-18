@@ -1,7 +1,5 @@
 package tfc.dto;
 
-import tfc.entities.EntityType;
-
 /**
  * TDF
  * User: Esaú González
@@ -10,7 +8,7 @@ import tfc.entities.EntityType;
  */
 public class UserMentionDTO extends EntityDTO{
 
-    private String mentionsUserId;
+    private String mentionsUserId;  //todo cambiar a UserDTO
     private String mentionsScreenName;
 
     public UserMentionDTO() {
@@ -31,5 +29,10 @@ public class UserMentionDTO extends EntityDTO{
 
     public void setMentionsScreenName(String mentionsScreenName) {
         this.mentionsScreenName = mentionsScreenName;
+    }
+
+    @Override
+    public String toString() {
+        return getMentionsScreenName();
     }
 }

@@ -1,4 +1,4 @@
-package tfc.entities;
+package tfc.dto;
 
 /**
  * TDF

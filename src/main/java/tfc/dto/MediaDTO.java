@@ -1,7 +1,5 @@
 package tfc.dto;
 
-import tfc.entities.EntityType;
-
 /**
  * TDF
  * User: Esaú González

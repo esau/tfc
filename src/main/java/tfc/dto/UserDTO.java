@@ -20,16 +20,12 @@ public class UserDTO {
     //user id of users followed
     private List<String> userFollowed;
     private int friendsCount;
-    private String url;
-    //id of tweets authored //Todo: needed???
-    private List<String> tweetsAuthored;
+    private UrlDTO url;
     //user id of followers
     private List<String> followers;
     private boolean verified;
     private int listedCount;
     private String location;
-    //id of tweets where it's mentioned in
-    private List<String> mentionedIn;
     private String name;
     private boolean protectedUser;
     private String screenName;
@@ -92,20 +88,12 @@ public class UserDTO {
         this.friendsCount = friendsCount;
     }
 
-    public String getUrl() {
+    public UrlDTO getUrl() {
         return url;
     }
 
-    public void setUrl(String url) {
+    public void setUrl(UrlDTO url) {
         this.url = url;
-    }
-
-    public List<String> getTweetsAuthored() {
-        return tweetsAuthored;
-    }
-
-    public void setTweetsAuthored(List<String> tweetsAuthored) {
-        this.tweetsAuthored = tweetsAuthored;
     }
 
     public List<String> getFollowers() {
@@ -138,14 +126,6 @@ public class UserDTO {
 
     public void setLocation(String location) {
         this.location = location;
-    }
-
-    public List<String> getMentionedIn() {
-        return mentionedIn;
-    }
-
-    public void setMentionedIn(List<String> mentionedIn) {
-        this.mentionedIn = mentionedIn;
     }
 
     public String getName() {

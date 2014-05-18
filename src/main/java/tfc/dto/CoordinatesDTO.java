@@ -9,8 +9,9 @@ package tfc.dto;
 public class CoordinatesDTO {
     private double latitude;
     private double longitude;
-    private String tweetId;
-    private String placeId;
+    private String tweetId; //Todo use TweetDTO??
+    private String placeId; //Todo use PlaceDTO??
+                            //todo maybe none??
 
     public double getLatitude() {
         return latitude;
@@ -43,4 +44,6 @@ public class CoordinatesDTO {
     public void setPlaceId(String placeId) {
         this.placeId = placeId;
     }
+
+    //todo override toString or create a getUniqueName???
 }

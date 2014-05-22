@@ -25,7 +25,7 @@ public class SingletonQueueMessageSender implements MessageSender{
     }
 
     public void sendMessage(Status pMessage) throws InterruptedException {
-        log.info("Message sent: " +pMessage);
+        log.debug("Message sent: " +pMessage);
         queue.put(pMessage);
     }
     

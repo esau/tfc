@@ -24,7 +24,7 @@ public class Main {
 
 
         } else {
-            System.out.println("Twitter query required by param");
+            System.out.println("ERROR: Twitter query required by param");
             System.exit(-1);
         }
     }

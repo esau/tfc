@@ -4,7 +4,9 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tfc.dto.*;
-import tfc.twitter.dao.*;
+import tfc.twitter.dao.PlaceDAO;
+import tfc.twitter.dao.TweetDAO;
+import tfc.twitter.dao.UserDAO;
 import twitter4j.*;
 
 import java.util.ArrayList;
@@ -19,22 +21,13 @@ import java.util.List;
 @Service
 public class TwitterManager {
     private static Logger log = Logger.getLogger(TwitterManager.class);
-    @Autowired
-    private CoordinatesDAO coordinatesDAO;
-    @Autowired
-    private HashtagDAO hashtagDAO;
-    @Autowired
-    private MediaDAO mediaDAO;
+
     @Autowired
     private PlaceDAO placeDAO;
     @Autowired
     private TweetDAO tweetDAO;
     @Autowired
-    private UrlDAO urlDAO;
-    @Autowired
     private UserDAO userDAO;
-    @Autowired
-    private UserMentionDAO userMentionDAO;
 
     public TweetDTO process(Status message) throws TwitterException {
         return parseStatusToTweetDTO(message, false);
@@ -271,7 +264,6 @@ public class TwitterManager {
     }
 
     private UserDTO parseAuthor(twitter4j.User user) throws TwitterException {
-        //todo pasar Status como parametro en lugar de User??
         UserDTO toReturn = new UserDTO();
         toReturn.setId(""+user.getId());
         toReturn.setName(user.getName());
@@ -290,7 +282,7 @@ public class TwitterManager {
         toReturn.setListedCount(user.getListedCount());
         toReturn.setUserFollowed(userDAO.findUserFriends(""+user.getId()));
         toReturn.setFollowers(userDAO.findUserFollowers(""+ user.getId()));
-        return null;
+        return toReturn;
     }
 
     private void setUrlEntities(User user, UserDTO toReturn) throws TwitterException {

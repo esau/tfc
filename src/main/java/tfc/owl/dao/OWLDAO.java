@@ -46,38 +46,50 @@ public class OWLDAO extends BaseDAO{
         //set User.isAuthor Object property with the Tweet instance
         setObjectProperty("isAuthor",owlIndividualUser,owlIndividualTweet);
         //store all Medi entities extracted from Tweet and sets the Tweet.hasMedia and Media.comesFrom object properties
-        List<OWLIndividual> owlIndividualMediaList = storeMedias(tweet.getMedias());
-        for (OWLIndividual owlIndividualMedia : owlIndividualMediaList) {
-            setObjectProperty("hasMedia",owlIndividualTweet,owlIndividualMedia);
-            setObjectProperty("comesFrom",owlIndividualMedia,owlIndividualTweet);
+        if (tweet.getMedias()!=null) {
+            List<OWLIndividual> owlIndividualMediaList = storeMedias(tweet.getMedias());
+            for (OWLIndividual owlIndividualMedia : owlIndividualMediaList) {
+                setObjectProperty("hasMedia",owlIndividualTweet,owlIndividualMedia);
+                setObjectProperty("comesFrom",owlIndividualMedia,owlIndividualTweet);
+            }
         }
         //store all Hashtag entities extracted from Tweet and sets the Tweet.hasHashtag and Hashtag.comesFrom object properties
-        List<OWLIndividual> owlIndividualHashtagList = storeHashtags(tweet.getHashtags());
-        for (OWLIndividual owlIndividualHashtag : owlIndividualHashtagList) {
-            setObjectProperty("hasHashtag", owlIndividualTweet,owlIndividualHashtag);
-            setObjectProperty("comesFrom",owlIndividualHashtag,owlIndividualTweet);
+        if (tweet.getHashtags()!=null) {
+            List<OWLIndividual> owlIndividualHashtagList = storeHashtags(tweet.getHashtags());
+            for (OWLIndividual owlIndividualHashtag : owlIndividualHashtagList) {
+                setObjectProperty("hasHashtag", owlIndividualTweet,owlIndividualHashtag);
+                setObjectProperty("comesFrom",owlIndividualHashtag,owlIndividualTweet);
+            }
         }
         //store all Url entities extracted from Tweet and sets the Tweet.hasUrls and Url.comesFrom object properties
-        List<OWLIndividual> owlIndividualUrlList = storeUrls(tweet.getUrls());
-        for (OWLIndividual owlIndividualUrl : owlIndividualUrlList) {
-            setObjectProperty("hasUrls",owlIndividualTweet,owlIndividualUrl);
-            setObjectProperty("comesFrom",owlIndividualUrl,owlIndividualTweet);
+        if (tweet.getUrls()!=null) {
+            List<OWLIndividual> owlIndividualUrlList = storeUrls(tweet.getUrls());
+            for (OWLIndividual owlIndividualUrl : owlIndividualUrlList) {
+                setObjectProperty("hasUrls",owlIndividualTweet,owlIndividualUrl);
+                setObjectProperty("comesFrom",owlIndividualUrl,owlIndividualTweet);
+            }
         }
         //store all UserMention entities extracted from Tweet and sets the Tweet.hasUserMention and UserMention.comesFrom object properties
-        List<OWLIndividual> owlIndividualUserMentionList = storeUserMentions(tweet.getUserMentions());
-        for (OWLIndividual owlIndividualUserMention : owlIndividualUserMentionList) {
-            setObjectProperty("hasUserMention",owlIndividualTweet,owlIndividualUserMention);
-            setObjectProperty("comesFrom",owlIndividualUserMention,owlIndividualTweet);
+        if (tweet.getUserMentions()!=null) {
+            List<OWLIndividual> owlIndividualUserMentionList = storeUserMentions(tweet.getUserMentions());
+            for (OWLIndividual owlIndividualUserMention : owlIndividualUserMentionList) {
+                setObjectProperty("hasUserMention",owlIndividualTweet,owlIndividualUserMention);
+                setObjectProperty("comesFrom",owlIndividualUserMention,owlIndividualTweet);
+            }
         }
 
         //store Place and set the Tweet.relatedToPlace and Place.tweetRelated object properties
-        OWLIndividual owlIndividualPlace = storePlace(tweet.getRelatedPlace());
-        setObjectProperty("relatedToPlace",owlIndividualTweet,owlIndividualPlace);
-        setObjectProperty("tweetRelated",owlIndividualPlace,owlIndividualTweet);
+        if (tweet.getRelatedPlace()!=null) {
+            OWLIndividual owlIndividualPlace = storePlace(tweet.getRelatedPlace());
+            setObjectProperty("relatedToPlace",owlIndividualTweet,owlIndividualPlace);
+            setObjectProperty("tweetRelated",owlIndividualPlace,owlIndividualTweet);
+        }
         //store Coordinates and sets the Tweet.hasCoordinates and Coordinates.inTweet object properties
-        OWLIndividual owlIndividualCoordinates = storeCoordinates(tweet.getCoordinates());
-        setObjectProperty("hasCoordinates",owlIndividualTweet,owlIndividualCoordinates);
-        setObjectProperty("inTweet",owlIndividualCoordinates,owlIndividualTweet);
+        if (tweet.getCoordinates()!=null) {
+            OWLIndividual owlIndividualCoordinates = storeCoordinates(tweet.getCoordinates());
+            setObjectProperty("hasCoordinates",owlIndividualTweet,owlIndividualCoordinates);
+            setObjectProperty("inTweet",owlIndividualCoordinates,owlIndividualTweet);
+        }
 
         return owlIndividualTweet;
     }

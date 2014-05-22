@@ -36,7 +36,7 @@ public class MessageHandler implements Runnable{
     public void run() {
         while (true){
             try {
-                log.debug("Empiezo a leer");
+                log.debug("Starting to read messages");
                 Status message = messageReader.readMessage();
                 log.debug("Message read: " + message);
                 processMessage(message);
@@ -53,8 +53,9 @@ public class MessageHandler implements Runnable{
     private void processMessage(Status message) throws InterruptedException, OWLOntologyStorageException {
         try {
             TweetDTO tweet = twitterManager.process(message);
-            //todo: if replied ask twitterManager for the Tweet
+            log.info("Processed tweet: "+tweet.getTweetExtract());
             owlService.store(tweet);
+            log.info("Tweet stored.");
         } catch (TwitterException e) {
             log.error("Exception handling with Twitter API: ", e);
             RateLimitStatus rateLimitStatus = e.getRateLimitStatus();

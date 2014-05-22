@@ -29,7 +29,6 @@ public abstract class BaseDAO {
         File file = new File(System.getProperty("ontology.path"));
 
         twitterOWL = manager.loadOntologyFromOntologyDocument(file);
-        System.out.println(twitterOWL);
 
         owlDataFactory = manager.getOWLDataFactory();
     }

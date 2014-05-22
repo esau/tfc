@@ -54,7 +54,7 @@ public class QueryHandler {
                         if (result.hasNext()) query=result.nextQuery();
                         noMoreResults=!result.hasNext();
                         //TODO remove this comments TESTING ONLY:
-                        //noMoreResults=true;
+                        noMoreResults=true;
                         workQueue.put(result);
                     }catch (TwitterException e) {
                         log.error("Error asking Twitter API ", e);
@@ -85,14 +85,17 @@ public class QueryHandler {
         }
 
         private void sendMessages(List<Status> processedResults) throws InterruptedException {
+            int messagesSent=0;
             for (Status processedResult : processedResults) {
-                messageSender.sendMessage(processedResult);    
+                messageSender.sendMessage(processedResult);
+                messagesSent++;
             }
+            log.info("Sent " + messagesSent + " messages to the Queue.");
         }
     }
 
     public void handleQuery(String query) {
-        log.debug("Handling query " + query);
+        log.info("Handling query " + query);
         QueryResultProducer producer = new QueryResultProducer();
         producer.setQuery(query);
         producer.start();

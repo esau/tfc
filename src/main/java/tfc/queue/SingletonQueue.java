@@ -37,6 +37,7 @@ public class SingletonQueue {
     /**
      * Read a message from queue
      * @return String message read from the queue
+     * @throws InterruptedException
      */
     public Status read() throws InterruptedException {
         log.debug("Reading message from q");

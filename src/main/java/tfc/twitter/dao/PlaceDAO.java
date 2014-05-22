@@ -24,7 +24,8 @@ public class PlaceDAO {
     public Place findPlaceById(String pPlaceId) throws TwitterException {
         return placesGeoResources.getGeoDetails(pPlaceId);
     }
-    
+
+    //todo remove after tests
     public static void main (String[] args){
         PlaceDAO placeDAO = new PlaceDAO();
         Place place = null;

@@ -161,4 +161,11 @@ public class TweetDTO {
     public String toString() {
         return "TweetId: "+id;
     }
+    
+    public String getTweetExtract(){
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("User ").append(author.getScreenName());
+        stringBuilder.append(" at ").append(created).append(" wrote: \"").append(text);
+        return stringBuilder.toString();
+    }
 }

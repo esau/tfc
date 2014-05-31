@@ -1,6 +1,7 @@
 package tfc.twitter.dao;
 
 import org.springframework.stereotype.Repository;
+import tfc.twitter.TwitterManager;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -24,7 +25,16 @@ public class TweetDAO {
         tweetsResources = twitter.tweets();
     }
 
-    public Status findStatusById(long repliedStatusId) throws TwitterException {
-        return tweetsResources.showStatus(repliedStatusId);
+    //todo check if infinite loop or nullpointer
+    public Status findStatusById(long repliedStatusId) throws InterruptedException {
+        Status toReturn=null;
+        do {
+            try {
+                toReturn = tweetsResources.showStatus(repliedStatusId);
+            } catch (TwitterException e) {
+                TwitterManager.handleTwitterException(e);
+            }
+        } while (toReturn==null);
+        return toReturn;
     }
 }

@@ -42,6 +42,10 @@ public class UrlDTO extends EntityDTO{
 
     @Override
     public String toString() {
-        return getDisplayUrl().substring(11, 21);
+        if (getDisplayUrl().length()>21) {
+            return getDisplayUrl().substring(11, 21);
+        } else {
+            return getDisplayUrl();
+        }
     }
 }

@@ -1,9 +1,6 @@
 package tfc.owl.dao;
 
-import org.semanticweb.owlapi.model.OWLIndividual;
-import org.semanticweb.owlapi.model.OWLLiteral;
-import org.semanticweb.owlapi.model.OWLOntologyCreationException;
-import org.semanticweb.owlapi.model.OWLOntologyStorageException;
+import org.semanticweb.owlapi.model.*;
 import org.springframework.stereotype.Repository;
 import tfc.dto.*;
 import uk.ac.manchester.cs.owl.owlapi.OWLDataPropertyImpl;
@@ -26,7 +23,7 @@ public class OWLDAO extends BaseDAO{
     }
 
     public void saveOntology() throws OWLOntologyStorageException {
-        manager.saveOntology(twitterOWL);
+        manager.saveOntology(twitterOWL, IRI.create(ontologyFile));
     }
 
     /**

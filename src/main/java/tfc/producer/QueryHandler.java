@@ -5,7 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import tfc.messages.MessageSender;
 import tfc.producer.querier.Querier;
-import twitter4j.*;
+import tfc.twitter.TwitterManager;
+import tfc.twitter.impl.PoisonedPillQueryResult;
+import tfc.twitter.impl.PoisonedPillStatus;
+import twitter4j.Query;
+import twitter4j.QueryResult;
+import twitter4j.Status;
+import twitter4j.TwitterException;
 
 import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -35,40 +41,47 @@ public class QueryHandler {
     class QueryResultProducer extends Thread{
         
         private Query query;
+        private int queryLimit;
+        private int resultsCount=50;
         
         protected void setQuery(String pQuery){
             query = new Query(pQuery);
             //todo: think the number of responses in query to match with the limit of request -balance
-            query.setCount(50);
+            query.setCount(resultsCount);
             //query.setCount(1);
         }
         
         public void run(){
             boolean noMoreResults=false;
-
+            QueryResult result;
             try {
-                while (!noMoreResults) {
-                    QueryResult result = null;
+                int resultsProcessed=0;
+                while (!noMoreResults && queryLimit!=-1?resultsProcessed<queryLimit:true) {
+
                     try {
                         result = twitterQuerier.executeQuery(query);
                         if (result.hasNext()) query=result.nextQuery();
+                        resultsProcessed = resultsProcessed + result.getCount();
                         noMoreResults=!result.hasNext();
                         //TODO remove this comments TESTING ONLY:
-                        noMoreResults=true;
+                        //noMoreResults=true;
                         workQueue.put(result);
                     }catch (TwitterException e) {
-                        log.error("Error asking Twitter API ", e);
-                        RateLimitStatus rateLimitStatus = e.getRateLimitStatus();
-                        long timeToRetry = rateLimitStatus.getSecondsUntilReset() * 1000l;
-                        Thread.sleep(timeToRetry);
+                        TwitterManager.handleTwitterException(e);
                     }
                 }
+                //sending no more results signal
+                result = new PoisonedPillQueryResult();
+                workQueue.put(result);
             } catch (InterruptedException e) {
                 log.error("Interrupted! ", e);
                 this.interrupt();
             }
         }
-        
+
+        public void setQueryLimit(int limit) {
+            queryLimit = limit;
+        }
     }
 
     class QueryResultConsumer extends Thread{
@@ -76,7 +89,14 @@ public class QueryHandler {
             while (true){
                 try {
                     QueryResult result = workQueue.take();
-                    sendMessages(result.getTweets());
+                    if (result.getTweets()!=null){
+                        sendMessages(result.getTweets());
+                    } else {
+                        log.info("No more results");
+                        //sending no more results signal
+                        sendMessages(result.getTweets());
+                        break;
+                    }
                 } catch (InterruptedException e) {
                     log.error("Interrupted! ", e);
                     this.interrupt();
@@ -86,18 +106,29 @@ public class QueryHandler {
 
         private void sendMessages(List<Status> processedResults) throws InterruptedException {
             int messagesSent=0;
-            for (Status processedResult : processedResults) {
-                messageSender.sendMessage(processedResult);
-                messagesSent++;
+            if (processedResults!=null) {
+                for (Status processedResult : processedResults) {
+                    messageSender.sendMessage(processedResult);
+                    messagesSent++;
+                }
+                log.info("Sent " + messagesSent + " messages to the Queue.");
+            } else {
+                log.info("No more messages to send");
+                messageSender.sendMessage(new PoisonedPillStatus());
             }
-            log.info("Sent " + messagesSent + " messages to the Queue.");
         }
     }
 
-    public void handleQuery(String query) {
-        log.info("Handling query " + query);
+    /**
+     * Handles the Twitter Search Query given by param with a limit of results. If limit=-1 there's no limit.
+     * @param query String query to execute with Twitter Search Query
+     * @param limit int max number of results for the query
+     */
+    public void handleQuery(String query, int limit) {
+        log.info("Handling query: [" + query + "]");
         QueryResultProducer producer = new QueryResultProducer();
         producer.setQuery(query);
+        producer.setQueryLimit(limit);
         producer.start();
         
         QueryResultConsumer consumer = new QueryResultConsumer();

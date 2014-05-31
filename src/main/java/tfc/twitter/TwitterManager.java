@@ -29,7 +29,7 @@ public class TwitterManager {
     @Autowired
     private UserDAO userDAO;
 
-    public TweetDTO process(Status message) throws TwitterException {
+    public TweetDTO process(Status message) throws InterruptedException {
         return parseStatusToTweetDTO(message, false);
     }
 
@@ -38,9 +38,9 @@ public class TwitterManager {
      * @param pOriginalStatus Status to parse to TweetDTO
      * @param pIsRetweetOrReply boolean tells if it's the second level of recursivity and it doesn't go further.
      * @return TweetDTO parsed from data within pOriginalStatus
-     * @throws TwitterException if there're problems with the Twitter API responses.
+     * @throws InterruptedException if the execution is interrupted
      */
-    private TweetDTO parseStatusToTweetDTO(Status pOriginalStatus, boolean pIsRetweetOrReply) throws TwitterException {
+    private TweetDTO parseStatusToTweetDTO(Status pOriginalStatus, boolean pIsRetweetOrReply) throws InterruptedException {
 
         TweetDTO tweet = new TweetDTO();
         tweet.setAuthor(parseAuthor(pOriginalStatus.getUser()));
@@ -86,7 +86,7 @@ public class TwitterManager {
         return tweet;
     }
 
-    private TweetDTO parseReplyStatus(Status pStatus) throws TwitterException {
+    private TweetDTO parseReplyStatus(Status pStatus) throws InterruptedException {
         TweetDTO toReturn=null;
         long repliedStatusId= pStatus.getInReplyToStatusId();
         log.debug("Replied: "+pStatus.getInReplyToStatusId());
@@ -99,11 +99,11 @@ public class TwitterManager {
         return toReturn;
     }
 
-    private Status findStatusById(long repliedStatusId) throws TwitterException {
+    private Status findStatusById(long repliedStatusId) throws InterruptedException {
         return tweetDAO.findStatusById(repliedStatusId);
     }
 
-    private PlaceDTO parsePlace(Status pStatus) throws TwitterException {
+    private PlaceDTO parsePlace(Status pStatus) throws InterruptedException {
         PlaceDTO toReturn=null;
         Place place = pStatus.getPlace();
         if (place!=null) {
@@ -147,11 +147,11 @@ public class TwitterManager {
         return toReturn;
     }
     
-    public Place findPlaceById(String pPlaceId) throws TwitterException {
+    public Place findPlaceById(String pPlaceId) throws InterruptedException {
         return placeDAO.findPlaceById(pPlaceId);
     }
 
-    private TweetDTO parseRetweetedStatus(Status pStatus) throws TwitterException {
+    private TweetDTO parseRetweetedStatus(Status pStatus) throws InterruptedException {
         TweetDTO toReturn=null;
         log.debug("Retweeted: "+pStatus.isRetweet());
         if(pStatus.isRetweet() || pStatus.getRetweetedStatus()!=null){
@@ -263,7 +263,7 @@ public class TwitterManager {
         return coordinatesDTO;
     }
 
-    private UserDTO parseAuthor(twitter4j.User user) throws TwitterException {
+    private UserDTO parseAuthor(twitter4j.User user) throws InterruptedException {
         UserDTO toReturn = new UserDTO();
         toReturn.setId(""+user.getId());
         toReturn.setName(user.getName());
@@ -280,12 +280,13 @@ public class TwitterManager {
         toReturn.setTweetCount(user.getStatusesCount());
         toReturn.setVerified(user.isVerified());
         toReturn.setListedCount(user.getListedCount());
-        toReturn.setUserFollowed(userDAO.findUserFriends(""+user.getId()));
-        toReturn.setFollowers(userDAO.findUserFollowers(""+ user.getId()));
+        //todo solve this problem
+        /*toReturn.setUserFollowed(userDAO.findUserFriends(""+user.getId()));
+        toReturn.setFollowers(userDAO.findUserFollowers(""+ user.getId()));*/
         return toReturn;
     }
 
-    private void setUrlEntities(User user, UserDTO toReturn) throws TwitterException {
+    private void setUrlEntities(User user, UserDTO toReturn) throws InterruptedException {
         User fetchedUser = userDAO.findUserById(""+user.getId());
         URLEntity[] urlEntities = fetchedUser.getDescriptionURLEntities();
         for (URLEntity urlEntity : urlEntities) {
@@ -304,5 +305,13 @@ public class TwitterManager {
         toReturn.setIndexA(url.getStart());
         toReturn.setIndexB(url.getEnd());
         return toReturn;
+    }
+
+    public static void handleTwitterException(TwitterException pTwitterException) throws InterruptedException {
+        log.warn("Twitter API rate limit exceeded");
+        RateLimitStatus rateLimitStatus = pTwitterException.getRateLimitStatus();
+        log.warn("Waiting "+ rateLimitStatus.getSecondsUntilReset() + " seconds for retry.");
+        long timeToRetry = rateLimitStatus.getSecondsUntilReset() * 1000l;
+        Thread.sleep(timeToRetry);
     }
 }

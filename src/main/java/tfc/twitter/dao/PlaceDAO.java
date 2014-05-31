@@ -1,7 +1,11 @@
 package tfc.twitter.dao;
 
 import org.springframework.stereotype.Repository;
-import twitter4j.*;
+import tfc.twitter.TwitterManager;
+import twitter4j.Place;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
 import twitter4j.api.PlacesGeoResources;
 
 /**
@@ -21,33 +25,16 @@ public class PlaceDAO {
         placesGeoResources = twitter.placesGeo();
     }
 
-    public Place findPlaceById(String pPlaceId) throws TwitterException {
-        return placesGeoResources.getGeoDetails(pPlaceId);
-    }
-
-    //todo remove after tests
-    public static void main (String[] args){
-        PlaceDAO placeDAO = new PlaceDAO();
-        Place place = null;
-        try {
-            place = placeDAO.findPlaceById("2bb0b13fcaa74150");
-            System.out.println("place: " + place);
-            GeoLocation[][] boundingBox =place.getBoundingBoxCoordinates();
-            for (GeoLocation[] geoLocations : boundingBox) {
-                for (GeoLocation geoLocation : geoLocations) {
-                    System.out.println("BoundingGeo: " + geoLocation);
-
-                }
+    public Place findPlaceById(String pPlaceId) throws InterruptedException {
+        Place toReturn = null;
+        do {
+            try {
+                toReturn = placesGeoResources.getGeoDetails(pPlaceId);
+            } catch (TwitterException e) {
+                TwitterManager.handleTwitterException(e);
             }
-            GeoLocation[][] geometryCoordinates = place.getGeometryCoordinates();
-            for (GeoLocation[] geometryCoordinate : geometryCoordinates) {
-                for (GeoLocation geoLocation : geometryCoordinate) {
-                    System.out.println("GeometryCoord: " + geoLocation);
-                }
-            }
-        } catch (TwitterException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-
+        } while (toReturn==null);
+        return toReturn;
     }
+   
 }

@@ -24,11 +24,14 @@ public abstract class BaseDAO {
     OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
     OWLOntology twitterOWL;
     private OWLDataFactory owlDataFactory;
+    File ontologyFile;
 
     protected BaseDAO() throws OWLOntologyCreationException {
-        File file = new File(System.getProperty("ontology.path"));
-
-        twitterOWL = manager.loadOntologyFromOntologyDocument(file);
+        ontologyFile = new File(System.getProperty("ontology.path"));
+        //todo find the correct way
+        //twitterOWL = manager.loadOntologyFromOntologyDocument(file);
+        //twitterOWL = manager.loadOntologyFromOntologyDocument(IRI.create(file));
+        twitterOWL = manager.loadOntology(IRI.create(ontologyFile));
 
         owlDataFactory = manager.getOWLDataFactory();
     }

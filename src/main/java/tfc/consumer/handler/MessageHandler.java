@@ -8,9 +8,7 @@ import tfc.dto.TweetDTO;
 import tfc.messages.MessageReader;
 import tfc.owl.OWLService;
 import tfc.twitter.TwitterManager;
-import twitter4j.RateLimitStatus;
 import twitter4j.Status;
-import twitter4j.TwitterException;
 
 /**
  * TDF
@@ -34,15 +32,35 @@ public class MessageHandler implements Runnable{
     }
 
     public void run() {
-        while (true){
+        boolean readingMessages = true;
+        while (readingMessages){
             try {
                 log.debug("Starting to read messages");
                 Status message = messageReader.readMessage();
                 log.debug("Message read: " + message);
-                processMessage(message);
-                Thread.sleep(10000l);
+                if (message.getUser()!=null) {
+                    StringBuilder logLine = new StringBuilder();
+                    logLine.append("Author: ").append(message.getUser().getScreenName()).append(" Text: ");
+
+                    if (message.getText().length()>30){
+                        logLine.append(message.getText().substring(0,30)).append("...");
+                    } else {
+                        logLine.append(message.getText());
+                    }
+                    log.debug(logLine.toString());
+                    processMessage(message);
+                    Thread.sleep(1000l);
+                } else {
+                    log.info("No more results to process");
+                    readingMessages=false;
+                }
             } catch (InterruptedException e) {
                 log.error("Interrupted!", e);
+                try {
+                    owlService.saveAllChangesBecauseInterruption();
+                } catch (OWLOntologyStorageException e1) {
+                    log.error("Can't save ontology after interruption.");
+                }
                 Thread.interrupted();
             } catch (OWLOntologyStorageException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -51,17 +69,10 @@ public class MessageHandler implements Runnable{
     }
 
     private void processMessage(Status message) throws InterruptedException, OWLOntologyStorageException {
-        try {
             TweetDTO tweet = twitterManager.process(message);
             log.info("Processed tweet: "+tweet.getTweetExtract());
             owlService.store(tweet);
             log.info("Tweet stored.");
-        } catch (TwitterException e) {
-            log.error("Exception handling with Twitter API: ", e);
-            RateLimitStatus rateLimitStatus = e.getRateLimitStatus();
-            long timeToRetry = rateLimitStatus.getSecondsUntilReset() * 1000l;
-            Thread.sleep(timeToRetry);
-        }
         log.debug("Processing message: " + message);
     }
 }

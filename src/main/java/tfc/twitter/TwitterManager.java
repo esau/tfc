@@ -172,7 +172,7 @@ public class TwitterManager {
             for (UserMentionEntity o :userMentionEntities) {
                 UserMentionDTO userMentionDTO = new UserMentionDTO();
                 userMentionDTO.setComesFromTweetId(tweetId);
-                userMentionDTO.setMentionsUserId("" + o.getId()); //todo go find User in Twitter
+                userMentionDTO.setMentionsUserId("" + o.getId());
                 userMentionDTO.setMentionsScreenName(o.getScreenName());
                 userMentionDTO.setIndexA(o.getStart());
                 userMentionDTO.setIndexB(o.getEnd());
@@ -280,9 +280,7 @@ public class TwitterManager {
         toReturn.setTweetCount(user.getStatusesCount());
         toReturn.setVerified(user.isVerified());
         toReturn.setListedCount(user.getListedCount());
-        //todo solve this problem
-        /*toReturn.setUserFollowed(userDAO.findUserFriends(""+user.getId()));
-        toReturn.setFollowers(userDAO.findUserFollowers(""+ user.getId()));*/
+
         return toReturn;
     }
 
@@ -310,8 +308,12 @@ public class TwitterManager {
     public static void handleTwitterException(TwitterException pTwitterException) throws InterruptedException {
         log.warn("Twitter API rate limit exceeded");
         RateLimitStatus rateLimitStatus = pTwitterException.getRateLimitStatus();
-        log.warn("Waiting "+ rateLimitStatus.getSecondsUntilReset() + " seconds for retry.");
-        long timeToRetry = rateLimitStatus.getSecondsUntilReset() * 1000l;
+        int waitingTime=10;
+        if (rateLimitStatus!=null){
+            waitingTime = rateLimitStatus.getSecondsUntilReset();
+        }
+        log.warn("Waiting "+ waitingTime + " seconds for retry.");
+        long timeToRetry = waitingTime * 1000l;
         Thread.sleep(timeToRetry);
     }
 }

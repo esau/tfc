@@ -17,7 +17,7 @@ public class Main {
             String query = args[0];
             int limit = -1;
             if (args.length>1)  limit = Integer.parseInt(args[1]);
-            System.out.println("limit" + limit);
+
             final ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("Application-Spring-conf.xml");
             context.start();
             MessageHandler messageHandler = (MessageHandler) context.getBean("messageHandler");

@@ -49,7 +49,7 @@ public class MessageHandler implements Runnable{
                     }
                     log.debug(logLine.toString());
                     processMessage(message);
-                    Thread.sleep(1000l);
+
                 } else {
                     log.info("No more results to process");
                     readingMessages=false;
@@ -69,10 +69,10 @@ public class MessageHandler implements Runnable{
     }
 
     private void processMessage(Status message) throws InterruptedException, OWLOntologyStorageException {
-            TweetDTO tweet = twitterManager.process(message);
-            log.info("Processed tweet: "+tweet.getTweetExtract());
-            owlService.store(tweet);
-            log.info("Tweet stored.");
+        TweetDTO tweet = twitterManager.process(message);
+        log.info("Processed tweet: "+tweet.getTweetExtract());
+        owlService.store(tweet);
+        log.info("Tweet stored.");
         log.debug("Processing message: " + message);
     }
 }

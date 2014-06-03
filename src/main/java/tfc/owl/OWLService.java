@@ -35,7 +35,6 @@ public class OWLService {
             OWLDAO.setObjectProperty("isRetweet", owlIndividualTweet, owlIndividualTweetRetweeted);
         }
 
-        System.out.println("Storing Tweet in OWL");
         OWLDAO.saveOntology();
     }
 

@@ -10,13 +10,13 @@
     <build>
         <resources>
             <resource>
-                <directory>conf/resources</directory>
+                <directory>src/main/conf/resources</directory>
+                <targetPath>tfc</targetPath>
             </resource>
         </resources>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
+                <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
                     <archive>
                         <manifest>
@@ -24,11 +24,6 @@
                             <mainClass>tfc.Main</mainClass>
                         </manifest>
                     </archive>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <configuration>
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>

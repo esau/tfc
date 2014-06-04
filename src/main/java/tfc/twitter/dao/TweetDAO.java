@@ -25,7 +25,6 @@ public class TweetDAO {
         tweetsResources = twitter.tweets();
     }
 
-    //todo check if infinite loop or nullpointer
     public Status findStatusById(long repliedStatusId) throws InterruptedException {
         Status toReturn=null;
         do {

@@ -23,18 +23,11 @@ public class TwitterQuerierImpl implements Querier{
     public QueryResult executeQuery(Query pQuery) throws TwitterException {
         log.debug("Starting query");
 
-
-        int resultNum=0;
-
-        QueryResult result = null;
         log.debug("Querying: " + pQuery.getQuery());
-        result = twitter.search(pQuery);
+        QueryResult result = twitter.search(pQuery);
         log.debug("Results: " +result.getCount());
         log.debug("Query done");
         log.debug("Has next? " + result.hasNext());
-
-
-            
 
         return result;
     }

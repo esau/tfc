@@ -8,7 +8,7 @@ package tfc.dto;
  */
 public class UserMentionDTO extends EntityDTO{
 
-    private String mentionsUserId;  //todo cambiar a UserDTO
+    private String mentionsUserId;
     private String mentionsScreenName;
 
     public UserMentionDTO() {

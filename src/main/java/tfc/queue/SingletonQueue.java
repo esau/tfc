@@ -27,7 +27,12 @@ public class SingletonQueue {
     private SingletonQueue() {
        messageQueue = new ArrayBlockingQueue<Status>(1024);
     }
-    
+
+    /**
+     * Send a message to the queue
+     * @param pMessage Status to put in the queue
+     * @throws InterruptedException
+     */
     public void put(Status pMessage) throws InterruptedException {
         messageQueue.put(pMessage);
         log.debug("message in q");
@@ -36,7 +41,7 @@ public class SingletonQueue {
 
     /**
      * Read a message from queue
-     * @return String message read from the queue
+     * @return Status message read from the queue
      * @throws InterruptedException
      */
     public Status read() throws InterruptedException {

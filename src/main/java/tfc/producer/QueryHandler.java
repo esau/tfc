@@ -46,9 +46,7 @@ public class QueryHandler {
         
         protected void setQuery(String pQuery){
             query = new Query(pQuery);
-            //todo: think the number of responses in query to match with the limit of request -balance
             query.setCount(resultsCount);
-            //query.setCount(1);
         }
         
         public void run(){
@@ -63,8 +61,6 @@ public class QueryHandler {
                         if (result.hasNext()) query=result.nextQuery();
                         resultsProcessed = resultsProcessed + result.getCount();
                         noMoreResults=!result.hasNext();
-                        //TODO remove this comments TESTING ONLY:
-                        //noMoreResults=true;
                         workQueue.put(result);
                     }catch (TwitterException e) {
                         TwitterManager.handleTwitterException(e);

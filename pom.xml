@@ -8,11 +8,6 @@
     <artifactId>tfc</artifactId>
     <version>1.0</version>
     <build>
-        <resources>
-            <resource>
-                <directory>conf/resources</directory>
-            </resource>
-        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

@@ -5,7 +5,7 @@ import tfc.consumer.handler.MessageHandler;
 import tfc.producer.QueryHandler;
 
 /**
- * TDF
+ * TFC
  * User: Esaú González
  * Date: 3/05/14
  * Time: 16:31
@@ -18,7 +18,7 @@ public class Main {
             int limit = -1;
             if (args.length>1)  limit = Integer.parseInt(args[1]);
 
-            final ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("Application-Spring-conf.xml");
+            final ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("Application-spring-conf.xml");
             context.start();
             MessageHandler messageHandler = (MessageHandler) context.getBean("messageHandler");
             new Thread(messageHandler).start();

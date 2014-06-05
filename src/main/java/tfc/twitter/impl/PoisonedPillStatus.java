@@ -5,7 +5,7 @@ import twitter4j.*;
 import java.util.Date;
 
 /**
- * TDF
+ * TFC
  * User: Esaú González
  * Date: 30/05/14
  * Time: 20:25

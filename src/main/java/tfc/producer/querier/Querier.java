@@ -5,7 +5,7 @@ import twitter4j.QueryResult;
 import twitter4j.TwitterException;
 
 /**
- * TDP Grup6
+ * TFC
  * User: Esaú González
  * Date: 27/04/14
  * Time: 17:37

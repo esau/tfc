@@ -8,7 +8,7 @@ import tfc.queue.SingletonQueue;
 import twitter4j.Status;
 
 /**
- * TDF
+ * TFC
  * User: Esaú González
  * Date: 3/05/14
  * Time: 17:57

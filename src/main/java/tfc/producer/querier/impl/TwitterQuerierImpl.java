@@ -5,7 +5,7 @@ import tfc.producer.querier.Querier;
 import twitter4j.*;
 
 /**
- * TDF
+ * TFC
  * User: Esaú González
  * Date: 27/04/14
  * Time: 17:39

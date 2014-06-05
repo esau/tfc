@@ -1,7 +1,7 @@
 package tfc.dto;
 
 /**
- * TDF
+ * TFC
  * User: Esaú González
  * Date: 27/04/14
  * Time: 18:19

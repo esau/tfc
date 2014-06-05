@@ -7,7 +7,7 @@ import twitter4j.Status;
 import java.util.concurrent.ArrayBlockingQueue;
 
 /**
- * TDF
+ * TFC
  * User: Esaú González
  * Date: 3/05/14
  * Time: 17:59

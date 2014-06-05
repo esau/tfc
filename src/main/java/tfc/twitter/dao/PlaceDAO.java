@@ -9,7 +9,7 @@ import twitter4j.TwitterFactory;
 import twitter4j.api.PlacesGeoResources;
 
 /**
- * TDF
+ * TFC
  * User: Esaú González
  * Date: 27/04/14
  * Time: 17:55

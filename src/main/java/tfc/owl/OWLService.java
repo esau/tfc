@@ -8,7 +8,7 @@ import tfc.dto.TweetDTO;
 import tfc.owl.dao.OWLDAO;
 
 /**
- * TDF
+ * TFC
  * User: Esaú González
  * Date: 27/04/14
  * Time: 17:53

@@ -10,7 +10,7 @@ import twitter4j.api.FriendsFollowersResources;
 import twitter4j.api.UsersResources;
 
 /**
- * TDF
+ * TFC
  * User: Esaú González
  * Date: 27/04/14
  * Time: 17:56

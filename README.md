@@ -8,5 +8,11 @@ Main entry point: tfc.Main
 
 VM params: -Dontology.path=[path to]\TwitterOntology.owl
             Example: -Dontology.path=C:\Users\Esaú\Dropbox\UOC\TFC\PAC3\ontology\TwitterOntology.owl
-Program params: "[Query string to execute in Twitter]"
-            Example: "final liga BBVA"
+Program params: "[Query string to execute in Twitter]" [query limit]
+
+To build the executable jar, using maven:
+mvn clean compile assembly:single
+
+Execution with jar:
+$>java -jar -Dontology.path=[ontology_file_path]/TwitterOntology.owl tfc-1.0-jar-with-dependencies.jar “[Twitter query]” [query limit]
+            
